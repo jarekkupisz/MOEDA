@@ -1,0 +1,25 @@
+Package: TEDA
+Type: Package
+Title: Targeted Exploratory Data Analysis - Finally, At a Glance Useful EDA
+Version: 0.1.0
+Authors@R: person("Jarek", "Kupisz", email = "jarekkupisz@gmail.com", 
+  role = c("aut", "cre", "cph"))
+Description: Targeted Exploratory Data Analysis (TEDA) is a novel approach to 
+    EDA, which aims to make you quickly understand how useful your data is in 
+    modelling a target variable. It generates a single graph of all groupings 
+    in your dataset and automatically assesses their inferential utility. This 
+    gives any data analyst or scientist an immediate feel of what can be 
+    expected from the data when taken through ML or statistical modelling 
+    initiatives. It addresses the main shortcomings of traditional EDA which 
+    tells you what the data is (how many variables of each type, how many 
+    nulls, etc.) instead of how useful it is. TEDA also challenges “automatic” 
+    EDA approaches, which really only automate the creation of dozens of charts 
+    without immediately surfacing the cons and pros of your explanatory 
+    variables. 
+License: GPL (>= 3)
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    dplyr (>= 1.0.7),
+    ggplot2 (>= 3.3.5),
+    magrittr (>= 2.0.1)
