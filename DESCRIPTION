@@ -1,25 +1,31 @@
-Package: TEDA
+Package: MOEDA
 Type: Package
-Title: Targeted Exploratory Data Analysis - Finally, At a Glance Useful EDA
+Title: Modeling-Oreinted Exploratory Data Analysis - Finally, At a Glance Useful EDA
 Version: 0.1.0
 Authors@R: person("Jarek", "Kupisz", email = "jarekkupisz@gmail.com", 
   role = c("aut", "cre", "cph"))
-Description: Targeted Exploratory Data Analysis (TEDA) is a novel approach to 
-    EDA, which aims to make you quickly understand how useful your data is in 
-    modelling a target variable. It generates a single graph of all groupings 
-    in your dataset and automatically assesses their inferential utility. This 
-    gives any data analyst or scientist an immediate feel of what can be 
-    expected from the data when taken through ML or statistical modelling 
-    initiatives. It addresses the main shortcomings of traditional EDA which 
-    tells you what the data is (how many variables of each type, how many 
-    nulls, etc.) instead of how useful it is. TEDA also challenges “automatic” 
-    EDA approaches, which really only automate the creation of dozens of charts 
-    without immediately surfacing the cons and pros of your explanatory 
-    variables. 
+Description: Modeling-Oriented Exploratory Data Analysis (MOEDA) is a novel 
+  approach to EDA, which aims to make you quickly understand how useful your 
+  data is in modelling a target variable. This gives any data analyst or 
+  scientist an immediate feel of what can be expected from the data when taken 
+  through ML or statistical modelling initiatives. It addresses the main 
+  shortcomings of traditional EDA which tells you what the data is (how many 
+  variables of each type, how many nulls, etc.) instead of how useful it is. 
+  MOEDA also challenges “automatic” EDA approaches, which only automate the 
+  creation of dozens of charts without immediately surfacing the cons and 
+  pros of your explanatory variables.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Imports: 
+    assertthat (>= 0.2.1),
+    ComplexUpset (>= 1.3.1),
     dplyr (>= 1.0.7),
+    GGally (>= 2.1.2),
     ggplot2 (>= 3.3.5),
-    magrittr (>= 2.0.1)
+    glue (>= 1.4.2),
+    parallel (>= 4.1.0),
+    parsnip (>= 0.1.7),
+    recipes (>= 0.1.16),
+    yardstick (>= 0.0.8)
+RoxygenNote: 7.1.1
