@@ -4,6 +4,11 @@
 #' for which base::cut is implemented (cut.default uses is.numeric), then checks
 #' if there are more unique values than cuts requested.
 #'
+#' @param x an atomic vector
+#' @param cuts An integer scalar determining how many cuts will be performed
+#'
+#' @return A boolean scalar
+#'
 is_cuttable <- function(x, cuts) {
 
   .is_granular <- function() length(unique(x)) > cuts

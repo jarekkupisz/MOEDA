@@ -6,6 +6,14 @@
 \usage{
 is_cuttable(x, cuts)
 }
+\arguments{
+\item{x}{an atomic vector}
+
+\item{cuts}{An integer scalar determining how many cuts will be performed}
+}
+\value{
+A boolean scalar
+}
 \description{
 Determines if a vector should be cut. Confirms if it inherits a class
 for which base::cut is implemented (cut.default uses is.numeric), then checks

@@ -2,10 +2,21 @@
 % Please edit documentation in R/rf_summary.R
 \name{run_rf_summary}
 \alias{run_rf_summary}
-\title{Run a random forest based summary}
+\title{Run a random forest based summary fo the MOEDA methos}
 \usage{
 run_rf_summary(df, target_var_name)
 }
+\arguments{
+\item{df}{A data.framish object which is the object of MOEDA analysis}
+
+\item{target_var_name}{A character scalar representing the name of the target
+variable in the analysis}
+}
+\value{
+A list with a tibble regarding permutation variable importance
+metrics and information whether the model run in a clessification or
+regression setting.
+}
 \description{
-Responsible for RF part of MOEDA method.
+Run a random forest based summary fo the MOEDA methos
 }

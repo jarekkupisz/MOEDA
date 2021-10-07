@@ -1,0 +1,76 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%",
+  warning = FALSE
+)
+```
+
+# Modeling-Oriented Exploratory Data Analysis (MOEDA) - Finally, At a Glance Useful EDA
+
+Modeling-Oriented Exploratory Data Analysis (MOEDA) is a novel approach to EDA, which aims to make you quickly understand how useful your data is in modelling a target variable. This gives any data analyst or scientist an immediate feel of what can be expected from the data when taken through ML or statistical modelling initiatives. It addresses the main shortcomings of traditional EDA which tells you what the data is (how many variables of each type, how many nulls, etc.) instead of how useful it is. MOEDA also challenges “automatic” EDA approaches, which only automate the creation of dozens of charts without immediately surfacing the cons and pros of your explanatory variables.
+
+## Installation and Usage Disclaimers	
+
+MOEDA is still in its infancy so if you want to jump on board prepare for a bumpy road ahead. Although the idea for this method was brewing in my head for a while and I use the package daily, currently I consider this package usable only in a personal context. The ambition is of course to move it to CRAN when it matures. If you are fine with all of that, fire away:
+
+``` {r, eval = FALSE}
+devtools::install_github("jarekkupisz/MOEDA")
+```
+
+## Usage example
+
+For a detailed explanation about the method please continue reading to the next paragraph. The package exports a single function. To use you typically only need to provide the target variable name as a string or unquoted (especially useful in a tidyverse piping context). You don’t need to worry about the rest.
+
+```{r example}
+library(dplyr)
+library(MOEDA)
+iris %>% moeda(Species)
+```
+
+## Why MOEDA?
+
+In my daily work as a data scientist and/or analyst I was tired of the same scenario repeating all over again. You get some data and you try to do some EDA on it with typically multiple tools and packages. You diligently plot your distribution, correlation and other plots trying to take in as much information as possible. After some time you discover that these plots were mostly useless, as there are only a few variables in the dataset that matter for modelling your target variable. I’ve done a thorough review of EDA tools and approaches and there are several main problems I noticed:
+
+1. Spitting out a dozen of charts is only useful if you have no idea about the dataset nor how it was generated, which is not common in daily work as you typically have some knowledge about your company and its data 😊
+2. Even if you have a nice EDA procedure that generates all these basic charts efficiently, you lose time trying to discern any meaning, which only comes typically after torturing the data in subsequent tasks like modelling or making reports. 
+3. If a dataset has flaws (like a lot of missing values) it should become visible immediately when you try to use it. Let’s remember that any data is only a tool to achieve the desired outcome, hence listing data properties with typical EDA approaches does not bring you directly closer to your goal. 
+
+## What is the vision?
+
+The vision for MOEDA is to produce a single chart with a single function call that will tell you how useful your data is in ML. The idea behind the method is to select the variables that have the most influence on the dependent variable and visualize their groupings using upset style visualization. 
+
+The selection of variables is done by measuring the random forest permutation variable importance. This method ensures that the selected variables truly hold predictive power and it is reasonably fast. Also, it is criminally underused in times when for some reason many think that algorithm selection and tuning give you any bank for your buck. 
+
+## How does it work currently?
+
+The visualization part is not yet finalized as I am still figuring the best output. Currently, if you run `moeda()` the following things happen:
+
+1. A random forest is run on the training set with 80% of observations
+2. Permutation variable importance is exported from the model and reported to the console together with some additional information
+3. Model’s performance is assessed on the test set of the remaining 20% of observations and reported to the console
+4. Top variables (their number can be specified with `n_top_vars` argument) are discretized using equal widths discretization via `base::cut()`. You can select the number of cuts with the `cuts` argument. 
+5. An upset plot of the intersections from 4. together with target variables is printed.
+6. A `GGally::ggpairs()` plot of top variables is printed.
+7. The function returns the original `df` and joins top features columns that were cut together with resulting intersections. These additional columns have `moedized` in their name.
+
+The function uses NSE so you can provide your target variable without quotation marks. It supports both regression and classification. Usage examples:
+
+```{r moreexamples}
+moeda(mtcars, mpg)
+```
+
+```{r moreexamples2}
+dplyr::storms %>% moeda(status)
+```
+
+
+

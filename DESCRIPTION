@@ -26,6 +26,11 @@ Imports:
     glue (>= 1.4.2),
     parallel (>= 4.1.0),
     parsnip (>= 0.1.7),
+    ranger (>= 0.13.1),
     recipes (>= 0.1.16),
+    rsample (>= 0.1.0),
     yardstick (>= 0.0.8)
 RoxygenNote: 7.1.1
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

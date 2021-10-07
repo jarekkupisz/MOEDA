@@ -1,7 +1,13 @@
-#' Run a random forest based summary
+#' Run a random forest based summary fo the MOEDA methos
 #'
+#' @param df A data.framish object which is the object of MOEDA analysis
+#' @param target_var_name A character scalar representing the name of the target
+#' variable in the analysis
 #'
-#' Responsible for RF part of MOEDA method.
+#' @return A list with a tibble regarding permutation variable importance
+#' metrics and information whether the model run in a clessification or
+#' regression setting.
+#'
 run_rf_summary <- function(df, target_var_name) {
 
   set.seed(1)
@@ -11,7 +17,7 @@ run_rf_summary <- function(df, target_var_name) {
   cv_split <- rsample::initial_split(
     df %>%
       mutate(
-        across(where(is.character), as.factor),
+        across(where(~ is.character(.x) | is.logical(.x)), as.factor),
         across(where(~ any(is.na(.x))))
       ),
     prop = 0.8
@@ -24,7 +30,7 @@ run_rf_summary <- function(df, target_var_name) {
       "ranger", importance = "permutation", num.threads = usable_cores
     ) %>%
     parsnip::fit(
-      as.formula(glue("{target_var_name}~.")),
+      stats::as.formula(glue("{target_var_name}~.")),
       data = rsample::training(cv_split)
     )
 
@@ -43,7 +49,7 @@ run_rf_summary <- function(df, target_var_name) {
   # unfortunately missing num values are not handled in prediction of ranger
   # TODO check if Random Forest is free of this issue
   initial_test_n <- nrow(rsample::testing(cv_split))
-  test_df <- rsample::testing(cv_split) %>% na.omit()
+  test_df <- rsample::testing(cv_split) %>% stats::na.omit()
 
   if (initial_test_n > nrow(test_df)) message(glue(
     "Test performance will be calculated on {nrow(test_df)} out of initially ",

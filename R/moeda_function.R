@@ -1,3 +1,41 @@
+#' Run a MOEDA Analysis
+#'
+#' The main function of the package that runs Modeling-Oriented Exploratory
+#' Data Analysis on your data.
+#'
+#'Currently, this function performs the following actions:
+#' \enumerate{
+#'   \item A random forest is run on the training set with 80 percent of
+#'   observations
+#'   \item Permutation variable importance is exported from the model and
+#'   reported to the console together with some additional information
+#'   \item Model's performance is assessed on the test set of the remaining
+#'   20 percent of observations and reported to the console
+#'   \item Top variables (their number can be specified with `n_top_vars`
+#'   argument) are discretized using equal widths discretization via
+#'   `base::cut()`. You can select the number of cuts with the `cuts` argument.
+#'   \item An upset plot of the intersections from 4. together with target
+#'   variables is printed.
+#'   \item A `GGally::ggpairs()` plot of top variables is printed.
+#'   \item The function returns the original `df` and joins top features
+#'   columns that were cut together with resulting intersections.
+#'   These additional columns have `moedized` in their name.
+#' }
+#'
+#' @param df A dataset you wish to analyze, typically a data.frame or a tibble
+#' @param target_var Unquoted expression or a scalar character representing the
+#' column in the `df` that is your target (aka dependent) variable for analysis
+#' @param n_top_vars An integer scalar specifying up to how many top variables
+#' you wish to consider for your analysis. By default 4
+#' @param cuts An integer scalar telling `base::cut()` how many equal width
+#' buckets to create in the top_vars. By default 4
+#' @param ... Arguments passed to `base::cut()`
+#'
+#' @return The original df as a tibble with joined top features columns that
+#' were cut together with resulting intersections. These additional columns
+#' have `moedized` in their name.
+#'
+#' @export
 moeda <- function(df, target_var, n_top_vars = 4, cuts = 4, ...) {
 
   #..................Target Variable Determination and basic assertions.........
@@ -65,7 +103,7 @@ moeda <- function(df, target_var, n_top_vars = 4, cuts = 4, ...) {
     "Printing an upset plot with MOEDA intersections of top vars. ",
     "Please browse back in the plots output pane if you wish to see it."
   ))
-  print(
+  suppressMessages(print(
     upset_cut_df %>%
       mutate(target_var_plot = df[[target_var_name]]) %>%
       ComplexUpset::upset(
@@ -85,7 +123,7 @@ moeda <- function(df, target_var, n_top_vars = 4, cuts = 4, ...) {
           }
         )
       )
-  )
+  ))
 
   message("Printing a GGally::ggpairs of target variable and top features.")
   suppressMessages(print(GGally::ggpairs(
